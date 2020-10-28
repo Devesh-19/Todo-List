@@ -8,5 +8,17 @@
 <body>
     <h1> <%= dayType %> </h1>
 
+    <ul>
+        <li>Buy Food</li>
+        <li>Cook Food</li>
+        <li>Eat Food</li>
+        <li><%= newItem %></li>
+    </ul>
+
+    <form action="/" method="post">
+        <input type="text" name="item">
+        <button type="submit">Add to list!</button>
+    </form>
+
 </body>
 </html>
