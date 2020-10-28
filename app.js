@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
-let item = "";
+let items = [];
 
 const app = express();
 
@@ -22,12 +22,14 @@ app.get("/", (req, res) =>
 
     const day = today.toLocaleDateString("en-IN", options);
 
-    res.render('list', {dayType: day, newItem: item});
+    res.render('list', {dayType: day, newItems: items});
 });
 
 app.post("/", (req, res) =>
 {
-    item = req.body.item;
+    let item = req.body.item;
+
+    items.push(item);
     
     res.redirect("/");
 });

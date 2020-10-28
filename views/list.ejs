@@ -12,7 +12,11 @@
         <li>Buy Food</li>
         <li>Cook Food</li>
         <li>Eat Food</li>
-        <li><%= newItem %></li>
+
+        <% for (let i in newItems) { %>
+            <li><%= newItems[i] %></li>
+        <% } %>
+        
     </ul>
 
     <form action="/" method="post">
