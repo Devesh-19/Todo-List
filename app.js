@@ -38,17 +38,17 @@ const eatFood = new Item (
 
 const defaultItems = [buyFood, cookFood, eatFood];
 
-Item.insertMany(defaultItems, err =>
-	{
-		if (err)
-		{
-			console.log(err);
-		}
-		else
-		{
-			console.log("Do these things!");
-		}
-	})
+// Item.insertMany(defaultItems, err =>
+// 	{
+// 		if (err)
+// 		{
+// 			console.log(err);
+// 		}
+// 		else
+// 		{
+// 			console.log("Do these things!");
+// 		}
+// 	})
 
 
 app.get("/", function(req, res) {
@@ -61,8 +61,28 @@ app.get("/", function(req, res) {
 		}
 		else
 		{
-            const day = date.getDate();
-			res.render("list", {listTitle: day, newItems: results});
+            if (results.length === 0)
+            {
+                Item.insertMany(defaultItems, err =>
+                    {
+                        if (err)
+                        {
+                            console.log(err);
+                        }
+                        else
+                        {
+                            console.log("Do these things!");
+                        }
+                    })
+                res.redirect("/");
+                
+            }
+            else
+            {
+                const day = date.getDate();
+                res.render("list", {listTitle: day, newItems: results});
+            }
+            
 		}
 	})
 });
