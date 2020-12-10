@@ -46,9 +46,9 @@ input[type="checkbox"] {
 p {
   margin: 0;
   padding: 20px;
-  font-size: 20px;
+  font-size: 23px;
   font-weight: 200;
-  color: #00204a;
+  color: #3162a3;
 }
 
 form.item {
@@ -56,7 +56,18 @@ form.item {
   margin-left: 20px;
 }
 
-button {
+a.delete {
+  margin-left: auto;
+  padding-right: 25px;
+  color: rgb(87, 65, 65);
+}
+
+a:active {
+  text-shadow: 0 0 10px rgb(112, 141, 143);
+}
+
+
+button.add {
   min-height: 50px;
   width: 50px;
   border-radius: 50%;

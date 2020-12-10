@@ -18,26 +18,12 @@ const itemSchema = {
 
 const Item = mongoose.model("Item", itemSchema);
 
-const buyFood = new Item (
-	{
-		name: "Buy Food"
-	}
-);
+const listSchema = {
+    name: String,
+    items: [itemSchema]
+}
 
-const cookFood = new Item (
-	{
-		name: "Cook Food"
-	}
-);
-
-const eatFood = new Item (
-	{
-		name: "Eat Food"
-	}
-);
-
-const defaultItems = [buyFood, cookFood, eatFood];
-
+const List = mongoose.model("List", listSchema);
 
 app.get("/", function(req, res) {
 
@@ -49,23 +35,8 @@ app.get("/", function(req, res) {
 		}
 		else
 		{
-            if (results.length === 0)
-            {
-                Item.insertMany(defaultItems, err =>
-                    {
-                        if (err)
-                        {
-                            console.log(err);
-                        }
-                    })
-                res.redirect("/");
-                
-            }
-            else
-            {
                 const day = date.getDate();
                 res.render("list", {listTitle: day, newItems: results});
-            }
             
 		}
 	})
@@ -85,10 +56,10 @@ app.post("/", (req, res) =>
     res.redirect("/");
 });
 
-app.post("/delete", (req, res) =>
+app.get("/delete/:id", (req, res) =>
 {
-    const checkedItemId = req.body.checkbox;
-    Item.findByIdAndRemove(checkedItemId, err =>
+    const delItemId = req.params.id;
+    Item.findByIdAndRemove(delItemId, err =>
         {
             if (!err)
             {
@@ -97,17 +68,17 @@ app.post("/delete", (req, res) =>
         })
 })
 
-app.get("/work", (req, res) =>
-{
-    res.render("list", {listTitle: "Work List", newItems: workItems});
-})
+// app.get("/work", (req, res) =>
+// {
+//     res.render("list", {listTitle: "Work List", newItems: workItems});
+// })
 
-app.post("/work", (req, res) =>
-{
-    const item = req.body.item;
-    workItems.push(item);
-    res.redirect("/work");
-})
+// app.post("/work", (req, res) =>
+// {
+//     const item = req.body.item;
+//     workItems.push(item);
+//     res.redirect("/work");
+// })
 
 app.listen(3000, () =>
 {

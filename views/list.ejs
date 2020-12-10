@@ -9,15 +9,16 @@
             <% if (item.name){ %>
                 <form action="/delete" method="post">
                     <div class="item">
-                        <input type="checkbox" name="checkbox" value="<%= item._id %>" onchange="this.form.submit()">
+                        <input type="checkbox" name="checkbox" value="<%= item._id %>" >
                         <p><%= item.name %></p>
+                        <a href="/delete/<%= item._id %>" class="delete"><span class="fas fa-trash fa-md"></span></a>
                     </div>
                 </form>
             <% } %>
         <% }) %>
         <form class="item" action="/" method="post">
             <input type="text" name="item" placeholder="New Item" autocomplete="off">
-            <button type="submit" name="list" value=<%= listTitle %>>+</button>
+            <button type="submit" class="add" name="list" value=<%= listTitle %>>+</button>
         </form>
     </div>
 
