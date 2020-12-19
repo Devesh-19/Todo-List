@@ -29,34 +29,50 @@ const listSchema = {
 const List = mongoose.model("List", listSchema);
 
 app.get("/", function (req, res) {
-	Item.find((err, results) => {
-		if (err) {
-			console.log(err);
-		} else {
-			const day = date.getDate();
-			res.render("list", { listTitle: "Today", newItems: results });
-		}
-	});
+	res.redirect("/Today")
 });
 
 app.post("/", (req, res) => {
 	const newItem = req.body.item;
+	const listName = req.body.list;
 
 	const newListItem = new Item({
 		name: newItem,
 	});
-
-	newListItem.save();
-	res.redirect("/");
+	List.findOne({ name: listName }, (err, foundList) => {
+		foundList.items.push(newListItem);
+		foundList.save();
+		res.redirect(`/${listName}`);
+	});
+	// if (listName === "Today") {
+	// 	newListItem.save();
+	// 	res.redirect("/Today");
+	// } else {
+	// 	List.findOne({ name: listName }, (err, foundList) => {
+	// 		foundList.items.push(newListItem);
+	// 		foundList.save();
+	// 		res.redirect(`/${listName}`);
+	// 	});
+	// }
 });
 
-app.get("/delete/:id", (req, res) => {
+app.get("/delete/:listName/:id", (req, res) => {
 	const delItemId = req.params.id;
-	Item.findByIdAndRemove(delItemId, (err) => {
-		if (!err) {
-			res.redirect("/");
+	const listName = req.params.listName;
+
+	List.updateOne({name: listName}, {$pull: {items: {_id: delItemId}}}, (err, results) =>
+	{
+		if(err){
+			console.log(err);
 		}
 	});
+	res.redirect(`/${listName}`);
+
+	// Item.findByIdAndRemove(delItemId, (err) => {
+	// 	if (!err) {
+	// 		res.redirect(`/${listName}`);
+	// 	}
+	// });
 });
 
 app.get("/:customListName", (req, res) => {
@@ -83,6 +99,6 @@ app.get("/:customListName", (req, res) => {
 	});
 });
 
-app.listen(3000, () => {
+app.listen(3030, () => {
 	console.log("Server is up and running at port 3000");
 });

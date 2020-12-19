@@ -11,7 +11,7 @@
                     <div class="item">
                         <input type="checkbox" name="checkbox" value="<%= item._id %>" >
                         <p><%= item.name %></p>
-                        <a href="/delete/<%= item._id %>" class="delete"><span class="fas fa-trash fa-md"></span></a>
+                        <a href="/delete/<%= listTitle %>/<%= item._id %>" class="delete"><span class="fas fa-trash fa-md"></span></a>
                     </div>
                 </form>
             <% } %>
