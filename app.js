@@ -1,7 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const _ = require("lodash")
+require("dotenv").config();
+const _ = require("lodash");
 
 const app = express();
 
@@ -10,7 +11,9 @@ app.use(express.static("public"));
 
 app.set("view engine", "ejs");
 
-mongoose.connect("mongodb://localhost:27017/todolistDB", {
+const MONGO_URI = process.env.MONGO_URI;
+
+mongoose.connect(MONGO_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 	useFindAndModify: false,
@@ -30,7 +33,7 @@ const listSchema = {
 const List = mongoose.model("List", listSchema);
 
 app.get("/", function (req, res) {
-	res.redirect("/Today")
+	res.redirect("/Today");
 });
 
 app.post("/", (req, res) => {
@@ -51,14 +54,16 @@ app.get("/delete/:listName/:id", (req, res) => {
 	const delItemId = req.params.id;
 	const listName = req.params.listName;
 
-	List.updateOne({name: listName}, {$pull: {items: {_id: delItemId}}}, (err, results) =>
-	{
-		if(err){
-			console.log(err);
+	List.updateOne(
+		{ name: listName },
+		{ $pull: { items: { _id: delItemId } } },
+		(err, results) => {
+			if (err) {
+				console.log(err);
+			}
 		}
-	});
+	);
 	res.redirect(`/${listName}`);
-
 });
 
 app.get("/:customListName", (req, res) => {
@@ -85,6 +90,6 @@ app.get("/:customListName", (req, res) => {
 	});
 });
 
-app.listen(3030, () => {
+app.listen(3000, () => {
 	console.log("Server is up and running at port 3000");
 });
