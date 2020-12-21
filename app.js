@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const _ = require("lodash")
 
 const app = express();
 
@@ -44,16 +45,6 @@ app.post("/", (req, res) => {
 		foundList.save();
 		res.redirect(`/${listName}`);
 	});
-	// if (listName === "Today") {
-	// 	newListItem.save();
-	// 	res.redirect("/Today");
-	// } else {
-	// 	List.findOne({ name: listName }, (err, foundList) => {
-	// 		foundList.items.push(newListItem);
-	// 		foundList.save();
-	// 		res.redirect(`/${listName}`);
-	// 	});
-	// }
 });
 
 app.get("/delete/:listName/:id", (req, res) => {
@@ -68,15 +59,10 @@ app.get("/delete/:listName/:id", (req, res) => {
 	});
 	res.redirect(`/${listName}`);
 
-	// Item.findByIdAndRemove(delItemId, (err) => {
-	// 	if (!err) {
-	// 		res.redirect(`/${listName}`);
-	// 	}
-	// });
 });
 
 app.get("/:customListName", (req, res) => {
-	const customListName = req.params.customListName;
+	const customListName = _.capitalize(req.params.customListName);
 
 	List.findOne({ name: customListName }, (err, foundList) => {
 		if (!err) {
