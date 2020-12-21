@@ -90,6 +90,11 @@ app.get("/:customListName", (req, res) => {
 	});
 });
 
-app.listen(3000, () => {
-	console.log("Server is up and running at port 3000");
+let port = process.env.PORT;
+if (port == null || port == "") {
+	port = 3000;
+}
+
+app.listen(port, () => {
+	console.log("Server has started successfully!");
 });
